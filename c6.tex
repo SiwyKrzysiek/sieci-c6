@@ -1,0 +1,128 @@
+\documentclass{article} % Polska wersja klasy article
+
+\usepackage{polski} % Pozwala na użycie polskiego. Ustawia między innymi fontenc na T1
+\usepackage[utf8]{inputenc} % Informuje o kodowaniu
+\usepackage{textcomp} % Znaki specjalne takie jak ~
+\usepackage{xcolor} % Definicje kolorów
+\usepackage{tcolorbox} % Ładne ramki
+
+\renewcommand{\labelitemi}{\textbullet} % Zmiana symbolu wliczeń
+
+\usepackage{graphicx}
+\graphicspath{ {./Obrazy/} }
+\usepackage{subcaption} % Subfigury
+\usepackage{float} % Pozycjonowanie figur
+\usepackage{mwe} % Tymczasowe grafiki
+
+\usepackage{listings} % Listingi kodu
+\lstset{
+  basicstyle=\ttfamily,
+  showstringspaces=false,
+  commentstyle=\color{gray},
+  keywordstyle=\color{blue},
+  breaklines=true,
+  % frame=L,
+  language=bash
+}
+
+\newcommand{\paragraphnl}[1]{\paragraph{#1} \mbox{} \\} % Paragraf z nową linią
+
+\title{Laboratorium sieci komputerowych - c6 \\ Docker}
+\author{Krzysztof Dąbrowski gr. 3}
+\date{\today}
+
+\begin{document}
+\maketitle{}
+\tableofcontents{}
+%\newpage
+
+\section{Cel zajęć}
+Celem laboratorium jest uruchomienie kontenera udostępniającego serwis sieciowy przy pomocy programu \textit{Docker}.
+
+Pracowałem na maszynie laboratoryjnej \texttt{c3}, na której był uruchomiony system CoreOS.
+
+\section{Kontener testowy}
+Na początek wyświetliłem wersję Dockera by upewnić się, że działa.
+
+\begin{tcolorbox}[colback=yellow!10!white,colframe=red!45!black,coltitle=yellow!100!black, title=Sprawdzienie czy Docker działa]
+  \begin{lstlisting}
+  docker version
+  \end{lstlisting}
+  \tcblower
+  \footnotesize
+  \begin{lstlisting}
+    Client: 
+    Version:           18.06.3-ce
+    API version:       1.38
+    Go version:        go1.10.8
+    Git commit:        d7080c1
+    Built:             Tue Feb 19 23:07:53 2019
+    OS/Arch:           linux/amd64
+    Experimental:      false
+   
+   Server:
+    Engine:
+     Version:          18.06.3-ce
+     API version:      1.38 (minimum version 1.12)
+     Go version:       go1.10.8
+     Git commit:       d7080c1
+     Built:            Tue Feb 19 23:07:53 2019
+     OS/Arch:          linux/amd64
+     Experimental:     false 
+  \end{lstlisting}
+\end{tcolorbox}
+\normalsize
+\vspace{5mm}
+
+\noindent{}Pobrałem obraz \texttt{hello-world} poleceniem
+\begin{center}
+  \texttt{docker pull hello-world}
+\end{center}
+Następnie uruchomiłem kontener na podstawie pobranego obrazu.
+
+\begin{tcolorbox}[colback=yellow!10!white,colframe=red!45!black,coltitle=yellow!100!black, title=hello-world]
+  \begin{lstlisting}
+  docker run hello-world
+  \end{lstlisting}
+  \tcblower
+  \scriptsize
+  \begin{lstlisting}
+  Hello from Docker!
+  This message shows that your installation appears to be working correctly.
+
+  To generate this message, Docker took the following steps:
+  1. The Docker client contacted the Docker daemon.
+  2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+      (amd64)
+  3. The Docker daemon created a new container from that image which runs the
+      executable that produces the output you are currently reading.
+  4. The Docker daemon streamed that output to the Docker client, which sent it
+      to your terminal.
+  \end{lstlisting}
+\end{tcolorbox}
+\normalsize
+
+\section{Kontener z serwerem WWW}
+Wybrałem kontener \texttt{httpd} w wersji 2.4 ponieważ jest lekki i posiada skonfigurowany serwer \textit{Apache}.
+
+Utworzyłem folder \texttt{WWW} ma maszynie \texttt{c3} oraz umieściłem w pliki index.html, script.js i style.css prostej strony internetowej, którą napisałem w wolnym czasie.
+
+Pobrałem obraz poleceniem
+\begin{center}
+  \texttt{docker pull httpd:2.4}
+\end{center}
+Następnie uruchomiłem kontener.
+\begin{center}
+  \scriptsize
+  \texttt{docker run -d -p 8080:80 -v /home/stud/www:/usr/local/apache2/htdocs/ httpd:2.4}
+  \normalsize
+\end{center}
+
+Zastosowałem następujące flagi
+\begin{itemize}
+  \item \texttt{d} -- Uruchomienie kontenera w tle ,
+  \item \texttt{p} -- Mapowanie portów maszyny na porty kontenera,
+  \item \texttt{v} -- Przekazanie katalogów maszyny kontenerowi.
+\end{itemize}
+
+\end{document}
