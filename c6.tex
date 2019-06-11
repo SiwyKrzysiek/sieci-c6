@@ -120,9 +120,26 @@ Następnie uruchomiłem kontener.
 
 Zastosowałem następujące flagi
 \begin{itemize}
-  \item \texttt{d} -- Uruchomienie kontenera w tle ,
+  \item \texttt{d} -- Uruchomienie kontenera w tle,
   \item \texttt{p} -- Mapowanie portów maszyny na porty kontenera,
   \item \texttt{v} -- Przekazanie katalogów maszyny kontenerowi.
 \end{itemize}
+
+Sprawdziłem czy kontener działa.
+\begin{tcolorbox}[colback=yellow!10!white,colframe=red!45!black,coltitle=yellow!100!black, title=Działające kontenery]
+  \begin{lstlisting}
+  docker ps
+  \end{lstlisting}
+  \tcblower
+  \scriptsize
+  \begin{lstlisting}
+  CONTAINER ID        IMAGE            PORTS
+  5ebacadfa869        httpd:2.4        0.0.0.0:8080->80/tcp
+  \end{lstlisting}
+\end{tcolorbox}
+\normalsize
+\vspace{5mm}
+
+Otworzyłem stronę udostępnianą przez serwer zainstalowany na kontenerze wchodząc na adres \texttt{http://s3:8080} w przeglądarce.
 
 \end{document}
